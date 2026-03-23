@@ -1,0 +1,55 @@
+## single-line comment
+
+#| multi-line
+    comment |#
+
+declare X = 10;
+declare Y_val = 3.14;
+declare Name = $Hello World$;
+declare Ch = 'A';
+declare Flag = true;
+
+function My_func(X, Y_val) 
+{
+    condition (X > Y_val) 
+    {
+        output $X is greater$;
+    } 
+    else 
+    {
+        output $Y is greater$;
+    }
+    return X + Y_val;
+}
+
+start 
+{
+    declare Result = My_func(10, 20);
+    declare Counter = 0;
+    loop (Counter < 10) 
+    {
+        Counter++;
+        condition (Counter == 5) 
+        {
+            break;
+        }
+    }
+    output Result;
+    input Name;
+
+    ## Testing operators
+    X = X + 1;
+    X += 2;
+    X -= 1;
+    X *= 3;
+    X /= 2;
+    Y_val = X ** 2;
+    declare Check = (X != Y_val) && (X <= 100) || !(Flag);
+    X--;
+
+    ## exp text
+    declare Pi = 3.141592;
+    declare Sci = 1.5e10;
+    declare Neg_sci = 2.0E-3;
+}
+finish;
