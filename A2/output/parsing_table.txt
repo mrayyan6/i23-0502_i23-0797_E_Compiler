@@ -1,0 +1,7 @@
+              | id                          | (                           | )                           | ,                           | $                           |
+--------------+-----------------------------+-----------------------------+-----------------------------+-----------------------------+-----------------------------+
+List          | List -> Element List'       | List -> Element List'       |                             |                             |                             |
+List'         |                             |                             | List' -> epsilon            | List' -> , Element List'    | List' -> epsilon            |
+Element       | Element -> id               | Element -> ( List )         |                             |                             |                             |
+
+Grammar is LL(1). No conflicts detected.
