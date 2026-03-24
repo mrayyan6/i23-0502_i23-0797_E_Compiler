@@ -2,9 +2,9 @@ import java.util.*;
 
 public class FirstFollow
 {
-    private Grammar g; // grammar
-    private Map<String, Set<String>> first; // firstSets
-    private Map<String, Set<String>> follow; // followSets
+    private Grammar g; 
+    private Map<String, Set<String>> first;  
+    private Map<String, Set<String>> follow; 
 
     public FirstFollow(Grammar g)
     {
@@ -22,20 +22,17 @@ public class FirstFollow
         buildFollow();
     }
 
-    // getFirst = getFirstSets
     public Map<String, Set<String>> getFirst()
     {
         return first;
     }
 
-    // getFollow = getFollowSets
     public Map<String, Set<String>> getFollow()
     {
         return follow;
     }
 
-    // buildFirst = computeFirstSets
-    private void buildFirst()
+    private void buildFirst()// makes first sets
     {
         boolean changed = true;
 
@@ -64,8 +61,7 @@ public class FirstFollow
         }
     }
 
-    // firstOfSeq = computeFirstOfSequence
-    public Set<String> firstOfSeq(List<String> seq)
+    public Set<String> firstOfSeq(List<String> seq)// finds seq ka first
     {
         Set<String> result = new LinkedHashSet<>();
 
@@ -125,7 +121,6 @@ public class FirstFollow
         return result;
     }
 
-    // buildFollow = computeFollowSets
     private void buildFollow()
     {
         String s = g.getStart();

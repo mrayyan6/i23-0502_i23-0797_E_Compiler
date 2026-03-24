@@ -6,9 +6,9 @@ public class Parser
     private Grammar g; // grammar
     private FirstFollow ff; // firstFollow
     private Map<String, Map<String, List<String>>> tbl; // parsingTable
-    private List<String> cols; // columns
-    private boolean hasCnf; // hasConflict
-    private List<String> cnfMsgs; // conflictMessages
+    private List<String> cols; // 
+    private boolean hasCnf; // conflict
+    private List<String> cnfMsgs; // conflict msg
 
     public Parser(Grammar g, FirstFollow ff) 
     {
@@ -36,7 +36,6 @@ public class Parser
         buildTbl();
     }
 
-    // buildTbl = buildTable
     private void buildTbl()
     {
         Map<String, Set<String>> follow = ff.getFollow();
@@ -77,7 +76,6 @@ public class Parser
         }
     }
 
-    // putCell = addToTable
     private void putCell(String nt, String term, String p)
     {
         Map<String, List<String>> row = tbl.get(nt);
@@ -115,7 +113,6 @@ public class Parser
         return hasCnf;
     }
 
-    // getCnfMsgs = getConflictMessages
     public List<String> getCnfMsgs()
     {
         return cnfMsgs;
@@ -210,7 +207,6 @@ public class Parser
         return out.toString();
     }
 
-    // writeFile = writeToFile
     public void writeFile(String path) throws IOException
     {
         File f = new File(path);

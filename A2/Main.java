@@ -83,7 +83,7 @@ public class Main
 
     private static String indent(String text) 
     {
-        StringBuilder out = new StringBuilder(); // sb = string builder
+        StringBuilder out = new StringBuilder(); 
         for (String line : text.split("\n")) 
         {
             out.append("    ").append(line).append("\n");
@@ -95,7 +95,7 @@ public class Main
     {
         File f = new File(path); // file
         f.getParentFile().mkdirs();
-        BufferedWriter bw = new BufferedWriter(new FileWriter(path)); // writer
+        BufferedWriter bw = new BufferedWriter(new FileWriter(path));
         bw.write(txt);
         bw.close();
     }
