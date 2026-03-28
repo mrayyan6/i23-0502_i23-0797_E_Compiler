@@ -1,0 +1,54 @@
+============================================================
+Parse Tree for input #1: id + * id
+============================================================
+  (No parse tree - string was rejected)
+  Errors:
+    ERROR [Line 1, Position 3]: Unexpected Symbol
+  No production for M[Term, *].
+  Expected: ( or id
+  Found: *
+    ERROR [Line 1, Position 4]: Unexpected Symbol
+  No production for M[ExprPrime, id].
+  Expected: ) or + or $
+  Found: id
+
+============================================================
+Parse Tree for input #2: id + id *
+============================================================
+  (No parse tree - string was rejected)
+  Errors:
+    ERROR [Line 2, Position 5]: Unexpected Symbol
+  No production for M[Factor, $].
+  Expected: ( or id
+  Found: $
+
+============================================================
+Parse Tree for input #3: ( id + id
+============================================================
+  (No parse tree - string was rejected)
+  Errors:
+    ERROR [Line 3, Position 5]: Missing Symbol
+  Expected terminal ')' but found '$'.
+  Expected: )
+  Found: $
+
+============================================================
+Parse Tree for input #4: + id
+============================================================
+  (No parse tree - string was rejected)
+  Errors:
+    ERROR [Line 4, Position 1]: Unexpected Symbol
+  No production for M[Expr, +].
+  Expected: ( or id
+  Found: +
+
+============================================================
+Parse Tree for input #5: id id
+============================================================
+  (No parse tree - string was rejected)
+  Errors:
+    ERROR [Line 5, Position 2]: Unexpected Symbol
+  No production for M[TermPrime, id].
+  Expected: ) or + or * or $
+  Found: id
+

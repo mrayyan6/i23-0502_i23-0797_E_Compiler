@@ -1,2 +1,3 @@
-Statement -> if Condition then Statement | if Condition then Statement else Statement | other
-Condition -> valid | invalid
+Start -> First Second
+First -> a | epsilon
+Second -> b

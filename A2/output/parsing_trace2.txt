@@ -1,0 +1,129 @@
+================================================================================
+Input #1: id + * id
+================================================================================
+Step   Stack                               Input                     Action
+----------------------------------------------------------------------------------------------------
+1      $ Expr                              id + * id $               Expr -> Term ExprPrime
+2      $ ExprPrime Term                    id + * id $               Term -> Factor TermPrime
+3      $ ExprPrime TermPrime Factor        id + * id $               Factor -> id
+4      $ ExprPrime TermPrime id            id + * id $               Match 'id'
+5      $ ExprPrime TermPrime               + * id $                  TermPrime -> epsilon
+6      $ ExprPrime                         + * id $                  ExprPrime -> + Term ExprPrime
+7      $ ExprPrime Term +                  + * id $                  Match '+'
+8      $ ExprPrime Term                    * id $                    ERROR: No entry M[Term, *]
+  Recovery: Skipping '*'
+  Recovery: Popped 'Term' from stack
+9      $ ExprPrime                         id $                      ERROR: No entry M[ExprPrime, id]
+  Recovery: Skipping 'id'
+  Recovery: Popped 'ExprPrime' from stack
+10     $                                   $                         ACCEPT
+
+Result: REJECTED with 2 error(s)
+ERROR [Line 1, Position 3]: Unexpected Symbol
+  No production for M[Term, *].
+  Expected: ( or id
+  Found: *
+ERROR [Line 1, Position 4]: Unexpected Symbol
+  No production for M[ExprPrime, id].
+  Expected: ) or + or $
+  Found: id
+
+================================================================================
+Input #2: id + id *
+================================================================================
+Step   Stack                               Input                     Action
+----------------------------------------------------------------------------------------------------
+1      $ Expr                              id + id * $               Expr -> Term ExprPrime
+2      $ ExprPrime Term                    id + id * $               Term -> Factor TermPrime
+3      $ ExprPrime TermPrime Factor        id + id * $               Factor -> id
+4      $ ExprPrime TermPrime id            id + id * $               Match 'id'
+5      $ ExprPrime TermPrime               + id * $                  TermPrime -> epsilon
+6      $ ExprPrime                         + id * $                  ExprPrime -> + Term ExprPrime
+7      $ ExprPrime Term +                  + id * $                  Match '+'
+8      $ ExprPrime Term                    id * $                    Term -> Factor TermPrime
+9      $ ExprPrime TermPrime Factor        id * $                    Factor -> id
+10     $ ExprPrime TermPrime id            id * $                    Match 'id'
+11     $ ExprPrime TermPrime               * $                       TermPrime -> * Factor TermPrime
+12     $ ExprPrime TermPrime Factor *      * $                       Match '*'
+13     $ ExprPrime TermPrime Factor        $                         ERROR: No entry M[Factor, $]
+  Recovery: Popping 'Factor' (treating as epsilon)
+14     $ ExprPrime TermPrime               $                         TermPrime -> epsilon
+15     $ ExprPrime                         $                         ExprPrime -> epsilon
+16     $                                   $                         ACCEPT
+
+Result: REJECTED with 1 error(s)
+ERROR [Line 2, Position 5]: Unexpected Symbol
+  No production for M[Factor, $].
+  Expected: ( or id
+  Found: $
+
+================================================================================
+Input #3: ( id + id
+================================================================================
+Step   Stack                               Input                     Action
+----------------------------------------------------------------------------------------------------
+1      $ Expr                              ( id + id $               Expr -> Term ExprPrime
+2      $ ExprPrime Term                    ( id + id $               Term -> Factor TermPrime
+3      $ ExprPrime TermPrime Factor        ( id + id $               Factor -> ( Expr )
+4      $ ExprPrime TermPrime ) Expr (      ( id + id $               Match '('
+5      $ ExprPrime TermPrime ) Expr        id + id $                 Expr -> Term ExprPrime
+6      $ ExprPrime TermPrime ) ExprPrime Term id + id $                 Term -> Factor TermPrime
+7      $ ExprPrime TermPrime ) ExprPrime TermPrime Factor id + id $                 Factor -> id
+8      $ ExprPrime TermPrime ) ExprPrime TermPrime id id + id $                 Match 'id'
+9      $ ExprPrime TermPrime ) ExprPrime TermPrime + id $                    TermPrime -> epsilon
+10     $ ExprPrime TermPrime ) ExprPrime   + id $                    ExprPrime -> + Term ExprPrime
+11     $ ExprPrime TermPrime ) ExprPrime Term + + id $                    Match '+'
+12     $ ExprPrime TermPrime ) ExprPrime Term id $                      Term -> Factor TermPrime
+13     $ ExprPrime TermPrime ) ExprPrime TermPrime Factor id $                      Factor -> id
+14     $ ExprPrime TermPrime ) ExprPrime TermPrime id id $                      Match 'id'
+15     $ ExprPrime TermPrime ) ExprPrime TermPrime $                         TermPrime -> epsilon
+16     $ ExprPrime TermPrime ) ExprPrime   $                         ExprPrime -> epsilon
+17     $ ExprPrime TermPrime )             $                         ERROR: Expected ')', found '$'
+  Recovery: Inserted missing ')'
+18     $ ExprPrime TermPrime               $                         TermPrime -> epsilon
+19     $ ExprPrime                         $                         ExprPrime -> epsilon
+20     $                                   $                         ACCEPT
+
+Result: REJECTED with 1 error(s)
+ERROR [Line 3, Position 5]: Missing Symbol
+  Expected terminal ')' but found '$'.
+  Expected: )
+  Found: $
+
+================================================================================
+Input #4: + id
+================================================================================
+Step   Stack                               Input                     Action
+----------------------------------------------------------------------------------------------------
+1      $ Expr                              + id $                    ERROR: No entry M[Expr, +]
+  Recovery: Skipping '+'
+  Recovery: Popped 'Expr' from stack
+  Recovery: Skipping remaining 'id'
+
+Result: REJECTED with 1 error(s)
+ERROR [Line 4, Position 1]: Unexpected Symbol
+  No production for M[Expr, +].
+  Expected: ( or id
+  Found: +
+
+================================================================================
+Input #5: id id
+================================================================================
+Step   Stack                               Input                     Action
+----------------------------------------------------------------------------------------------------
+1      $ Expr                              id id $                   Expr -> Term ExprPrime
+2      $ ExprPrime Term                    id id $                   Term -> Factor TermPrime
+3      $ ExprPrime TermPrime Factor        id id $                   Factor -> id
+4      $ ExprPrime TermPrime id            id id $                   Match 'id'
+5      $ ExprPrime TermPrime               id $                      ERROR: No entry M[TermPrime, id]
+  Recovery: Skipping 'id'
+  Recovery: Popped 'TermPrime' from stack
+6      $ ExprPrime                         $                         ExprPrime -> epsilon
+7      $                                   $                         ACCEPT
+
+Result: REJECTED with 1 error(s)
+ERROR [Line 5, Position 2]: Unexpected Symbol
+  No production for M[TermPrime, id].
+  Expected: ) or + or * or $
+  Found: id
+

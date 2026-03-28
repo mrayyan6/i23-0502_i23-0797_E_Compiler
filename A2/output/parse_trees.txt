@@ -1,0 +1,132 @@
+============================================================
+Parse Tree for input #1: id
+============================================================
+
+└── Expr
+    ├── Term
+    │   ├── Factor
+    │   │   └── "id"
+    │   └── TermPrime
+    │       └── epsilon
+    └── ExprPrime
+        └── epsilon
+
+Preorder:  Expr Term Factor id TermPrime epsilon ExprPrime epsilon
+Postorder: id Factor epsilon TermPrime Term epsilon ExprPrime Expr
+
+============================================================
+Parse Tree for input #2: ( ( id ) )
+============================================================
+
+└── Expr
+    ├── Term
+    │   ├── Factor
+    │   │   ├── "("
+    │   │   ├── Expr
+    │   │   │   ├── Term
+    │   │   │   │   ├── Factor
+    │   │   │   │   │   ├── "("
+    │   │   │   │   │   ├── Expr
+    │   │   │   │   │   │   ├── Term
+    │   │   │   │   │   │   │   ├── Factor
+    │   │   │   │   │   │   │   │   └── "id"
+    │   │   │   │   │   │   │   └── TermPrime
+    │   │   │   │   │   │   │       └── epsilon
+    │   │   │   │   │   │   └── ExprPrime
+    │   │   │   │   │   │       └── epsilon
+    │   │   │   │   │   └── ")"
+    │   │   │   │   └── TermPrime
+    │   │   │   │       └── epsilon
+    │   │   │   └── ExprPrime
+    │   │   │       └── epsilon
+    │   │   └── ")"
+    │   └── TermPrime
+    │       └── epsilon
+    └── ExprPrime
+        └── epsilon
+
+Preorder:  Expr Term Factor ( Expr Term Factor ( Expr Term Factor id TermPrime epsilon ExprPrime epsilon ) TermPrime epsilon ExprPrime epsilon ) TermPrime epsilon ExprPrime epsilon
+Postorder: ( ( id Factor epsilon TermPrime Term epsilon ExprPrime Expr ) Factor epsilon TermPrime Term epsilon ExprPrime Expr ) Factor epsilon TermPrime Term epsilon ExprPrime Expr
+
+============================================================
+Parse Tree for input #3: id + id + id + id
+============================================================
+
+└── Expr
+    ├── Term
+    │   ├── Factor
+    │   │   └── "id"
+    │   └── TermPrime
+    │       └── epsilon
+    └── ExprPrime
+        ├── "+"
+        ├── Term
+        │   ├── Factor
+        │   │   └── "id"
+        │   └── TermPrime
+        │       └── epsilon
+        └── ExprPrime
+            ├── "+"
+            ├── Term
+            │   ├── Factor
+            │   │   └── "id"
+            │   └── TermPrime
+            │       └── epsilon
+            └── ExprPrime
+                ├── "+"
+                ├── Term
+                │   ├── Factor
+                │   │   └── "id"
+                │   └── TermPrime
+                │       └── epsilon
+                └── ExprPrime
+                    └── epsilon
+
+Preorder:  Expr Term Factor id TermPrime epsilon ExprPrime + Term Factor id TermPrime epsilon ExprPrime + Term Factor id TermPrime epsilon ExprPrime + Term Factor id TermPrime epsilon ExprPrime epsilon
+Postorder: id Factor epsilon TermPrime Term + id Factor epsilon TermPrime Term + id Factor epsilon TermPrime Term + id Factor epsilon TermPrime Term epsilon ExprPrime ExprPrime ExprPrime ExprPrime Expr
+
+============================================================
+Parse Tree for input #4: ( id * ( id + id ) )
+============================================================
+
+└── Expr
+    ├── Term
+    │   ├── Factor
+    │   │   ├── "("
+    │   │   ├── Expr
+    │   │   │   ├── Term
+    │   │   │   │   ├── Factor
+    │   │   │   │   │   └── "id"
+    │   │   │   │   └── TermPrime
+    │   │   │   │       ├── "*"
+    │   │   │   │       ├── Factor
+    │   │   │   │       │   ├── "("
+    │   │   │   │       │   ├── Expr
+    │   │   │   │       │   │   ├── Term
+    │   │   │   │       │   │   │   ├── Factor
+    │   │   │   │       │   │   │   │   └── "id"
+    │   │   │   │       │   │   │   └── TermPrime
+    │   │   │   │       │   │   │       └── epsilon
+    │   │   │   │       │   │   └── ExprPrime
+    │   │   │   │       │   │       ├── "+"
+    │   │   │   │       │   │       ├── Term
+    │   │   │   │       │   │       │   ├── Factor
+    │   │   │   │       │   │       │   │   └── "id"
+    │   │   │   │       │   │       │   └── TermPrime
+    │   │   │   │       │   │       │       └── epsilon
+    │   │   │   │       │   │       └── ExprPrime
+    │   │   │   │       │   │           └── epsilon
+    │   │   │   │       │   └── ")"
+    │   │   │   │       └── TermPrime
+    │   │   │   │           └── epsilon
+    │   │   │   └── ExprPrime
+    │   │   │       └── epsilon
+    │   │   └── ")"
+    │   └── TermPrime
+    │       └── epsilon
+    └── ExprPrime
+        └── epsilon
+
+Preorder:  Expr Term Factor ( Expr Term Factor id TermPrime * Factor ( Expr Term Factor id TermPrime epsilon ExprPrime + Term Factor id TermPrime epsilon ExprPrime epsilon ) TermPrime epsilon ExprPrime epsilon ) TermPrime epsilon ExprPrime epsilon
+Postorder: ( id Factor * ( id Factor epsilon TermPrime Term + id Factor epsilon TermPrime Term epsilon ExprPrime ExprPrime Expr ) Factor epsilon TermPrime TermPrime Term epsilon ExprPrime Expr ) Factor epsilon TermPrime Term epsilon ExprPrime Expr
+
