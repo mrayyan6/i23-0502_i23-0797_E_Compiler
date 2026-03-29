@@ -3,22 +3,22 @@ Input #1: id + id * id
 ================================================================================
 Step   Stack                               Input                     Action
 ----------------------------------------------------------------------------------------------------
-1      $ Expr                              id + id * id $            Expr -> Term ExprPrime
-2      $ ExprPrime Term                    id + id * id $            Term -> Factor TermPrime
-3      $ ExprPrime TermPrime Factor        id + id * id $            Factor -> id
-4      $ ExprPrime TermPrime id            id + id * id $            Match 'id'
-5      $ ExprPrime TermPrime               + id * id $               TermPrime -> epsilon
-6      $ ExprPrime                         + id * id $               ExprPrime -> + Term ExprPrime
-7      $ ExprPrime Term +                  + id * id $               Match '+'
-8      $ ExprPrime Term                    id * id $                 Term -> Factor TermPrime
-9      $ ExprPrime TermPrime Factor        id * id $                 Factor -> id
-10     $ ExprPrime TermPrime id            id * id $                 Match 'id'
-11     $ ExprPrime TermPrime               * id $                    TermPrime -> * Factor TermPrime
-12     $ ExprPrime TermPrime Factor *      * id $                    Match '*'
-13     $ ExprPrime TermPrime Factor        id $                      Factor -> id
-14     $ ExprPrime TermPrime id            id $                      Match 'id'
-15     $ ExprPrime TermPrime               $                         TermPrime -> epsilon
-16     $ ExprPrime                         $                         ExprPrime -> epsilon
+1      $ Expr                              id + id * id $            Expr -> Term Expr'
+2      $ Expr' Term                        id + id * id $            Term -> Factor Term'
+3      $ Expr' Term' Factor                id + id * id $            Factor -> id
+4      $ Expr' Term' id                    id + id * id $            Match 'id'
+5      $ Expr' Term'                       + id * id $               Term' -> epsilon
+6      $ Expr'                             + id * id $               Expr' -> + Term Expr'
+7      $ Expr' Term +                      + id * id $               Match '+'
+8      $ Expr' Term                        id * id $                 Term -> Factor Term'
+9      $ Expr' Term' Factor                id * id $                 Factor -> id
+10     $ Expr' Term' id                    id * id $                 Match 'id'
+11     $ Expr' Term'                       * id $                    Term' -> * Factor Term'
+12     $ Expr' Term' Factor *              * id $                    Match '*'
+13     $ Expr' Term' Factor                id $                      Factor -> id
+14     $ Expr' Term' id                    id $                      Match 'id'
+15     $ Expr' Term'                       $                         Term' -> epsilon
+16     $ Expr'                             $                         Expr' -> epsilon
 17     $                                   $                         ACCEPT
 
 Result: ACCEPTED
@@ -28,29 +28,29 @@ Input #2: ( id + id ) * id
 ================================================================================
 Step   Stack                               Input                     Action
 ----------------------------------------------------------------------------------------------------
-1      $ Expr                              ( id + id ) * id $        Expr -> Term ExprPrime
-2      $ ExprPrime Term                    ( id + id ) * id $        Term -> Factor TermPrime
-3      $ ExprPrime TermPrime Factor        ( id + id ) * id $        Factor -> ( Expr )
-4      $ ExprPrime TermPrime ) Expr (      ( id + id ) * id $        Match '('
-5      $ ExprPrime TermPrime ) Expr        id + id ) * id $          Expr -> Term ExprPrime
-6      $ ExprPrime TermPrime ) ExprPrime Term id + id ) * id $          Term -> Factor TermPrime
-7      $ ExprPrime TermPrime ) ExprPrime TermPrime Factor id + id ) * id $          Factor -> id
-8      $ ExprPrime TermPrime ) ExprPrime TermPrime id id + id ) * id $          Match 'id'
-9      $ ExprPrime TermPrime ) ExprPrime TermPrime + id ) * id $             TermPrime -> epsilon
-10     $ ExprPrime TermPrime ) ExprPrime   + id ) * id $             ExprPrime -> + Term ExprPrime
-11     $ ExprPrime TermPrime ) ExprPrime Term + + id ) * id $             Match '+'
-12     $ ExprPrime TermPrime ) ExprPrime Term id ) * id $               Term -> Factor TermPrime
-13     $ ExprPrime TermPrime ) ExprPrime TermPrime Factor id ) * id $               Factor -> id
-14     $ ExprPrime TermPrime ) ExprPrime TermPrime id id ) * id $               Match 'id'
-15     $ ExprPrime TermPrime ) ExprPrime TermPrime ) * id $                  TermPrime -> epsilon
-16     $ ExprPrime TermPrime ) ExprPrime   ) * id $                  ExprPrime -> epsilon
-17     $ ExprPrime TermPrime )             ) * id $                  Match ')'
-18     $ ExprPrime TermPrime               * id $                    TermPrime -> * Factor TermPrime
-19     $ ExprPrime TermPrime Factor *      * id $                    Match '*'
-20     $ ExprPrime TermPrime Factor        id $                      Factor -> id
-21     $ ExprPrime TermPrime id            id $                      Match 'id'
-22     $ ExprPrime TermPrime               $                         TermPrime -> epsilon
-23     $ ExprPrime                         $                         ExprPrime -> epsilon
+1      $ Expr                              ( id + id ) * id $        Expr -> Term Expr'
+2      $ Expr' Term                        ( id + id ) * id $        Term -> Factor Term'
+3      $ Expr' Term' Factor                ( id + id ) * id $        Factor -> ( Expr )
+4      $ Expr' Term' ) Expr (              ( id + id ) * id $        Match '('
+5      $ Expr' Term' ) Expr                id + id ) * id $          Expr -> Term Expr'
+6      $ Expr' Term' ) Expr' Term          id + id ) * id $          Term -> Factor Term'
+7      $ Expr' Term' ) Expr' Term' Factor  id + id ) * id $          Factor -> id
+8      $ Expr' Term' ) Expr' Term' id      id + id ) * id $          Match 'id'
+9      $ Expr' Term' ) Expr' Term'         + id ) * id $             Term' -> epsilon
+10     $ Expr' Term' ) Expr'               + id ) * id $             Expr' -> + Term Expr'
+11     $ Expr' Term' ) Expr' Term +        + id ) * id $             Match '+'
+12     $ Expr' Term' ) Expr' Term          id ) * id $               Term -> Factor Term'
+13     $ Expr' Term' ) Expr' Term' Factor  id ) * id $               Factor -> id
+14     $ Expr' Term' ) Expr' Term' id      id ) * id $               Match 'id'
+15     $ Expr' Term' ) Expr' Term'         ) * id $                  Term' -> epsilon
+16     $ Expr' Term' ) Expr'               ) * id $                  Expr' -> epsilon
+17     $ Expr' Term' )                     ) * id $                  Match ')'
+18     $ Expr' Term'                       * id $                    Term' -> * Factor Term'
+19     $ Expr' Term' Factor *              * id $                    Match '*'
+20     $ Expr' Term' Factor                id $                      Factor -> id
+21     $ Expr' Term' id                    id $                      Match 'id'
+22     $ Expr' Term'                       $                         Term' -> epsilon
+23     $ Expr'                             $                         Expr' -> epsilon
 24     $                                   $                         ACCEPT
 
 Result: ACCEPTED
@@ -60,22 +60,22 @@ Input #3: id * id + id
 ================================================================================
 Step   Stack                               Input                     Action
 ----------------------------------------------------------------------------------------------------
-1      $ Expr                              id * id + id $            Expr -> Term ExprPrime
-2      $ ExprPrime Term                    id * id + id $            Term -> Factor TermPrime
-3      $ ExprPrime TermPrime Factor        id * id + id $            Factor -> id
-4      $ ExprPrime TermPrime id            id * id + id $            Match 'id'
-5      $ ExprPrime TermPrime               * id + id $               TermPrime -> * Factor TermPrime
-6      $ ExprPrime TermPrime Factor *      * id + id $               Match '*'
-7      $ ExprPrime TermPrime Factor        id + id $                 Factor -> id
-8      $ ExprPrime TermPrime id            id + id $                 Match 'id'
-9      $ ExprPrime TermPrime               + id $                    TermPrime -> epsilon
-10     $ ExprPrime                         + id $                    ExprPrime -> + Term ExprPrime
-11     $ ExprPrime Term +                  + id $                    Match '+'
-12     $ ExprPrime Term                    id $                      Term -> Factor TermPrime
-13     $ ExprPrime TermPrime Factor        id $                      Factor -> id
-14     $ ExprPrime TermPrime id            id $                      Match 'id'
-15     $ ExprPrime TermPrime               $                         TermPrime -> epsilon
-16     $ ExprPrime                         $                         ExprPrime -> epsilon
+1      $ Expr                              id * id + id $            Expr -> Term Expr'
+2      $ Expr' Term                        id * id + id $            Term -> Factor Term'
+3      $ Expr' Term' Factor                id * id + id $            Factor -> id
+4      $ Expr' Term' id                    id * id + id $            Match 'id'
+5      $ Expr' Term'                       * id + id $               Term' -> * Factor Term'
+6      $ Expr' Term' Factor *              * id + id $               Match '*'
+7      $ Expr' Term' Factor                id + id $                 Factor -> id
+8      $ Expr' Term' id                    id + id $                 Match 'id'
+9      $ Expr' Term'                       + id $                    Term' -> epsilon
+10     $ Expr'                             + id $                    Expr' -> + Term Expr'
+11     $ Expr' Term +                      + id $                    Match '+'
+12     $ Expr' Term                        id $                      Term -> Factor Term'
+13     $ Expr' Term' Factor                id $                      Factor -> id
+14     $ Expr' Term' id                    id $                      Match 'id'
+15     $ Expr' Term'                       $                         Term' -> epsilon
+16     $ Expr'                             $                         Expr' -> epsilon
 17     $                                   $                         ACCEPT
 
 Result: ACCEPTED
@@ -85,12 +85,12 @@ Input #4: id
 ================================================================================
 Step   Stack                               Input                     Action
 ----------------------------------------------------------------------------------------------------
-1      $ Expr                              id $                      Expr -> Term ExprPrime
-2      $ ExprPrime Term                    id $                      Term -> Factor TermPrime
-3      $ ExprPrime TermPrime Factor        id $                      Factor -> id
-4      $ ExprPrime TermPrime id            id $                      Match 'id'
-5      $ ExprPrime TermPrime               $                         TermPrime -> epsilon
-6      $ ExprPrime                         $                         ExprPrime -> epsilon
+1      $ Expr                              id $                      Expr -> Term Expr'
+2      $ Expr' Term                        id $                      Term -> Factor Term'
+3      $ Expr' Term' Factor                id $                      Factor -> id
+4      $ Expr' Term' id                    id $                      Match 'id'
+5      $ Expr' Term'                       $                         Term' -> epsilon
+6      $ Expr'                             $                         Expr' -> epsilon
 7      $                                   $                         ACCEPT
 
 Result: ACCEPTED
@@ -100,19 +100,19 @@ Input #5: ( id )
 ================================================================================
 Step   Stack                               Input                     Action
 ----------------------------------------------------------------------------------------------------
-1      $ Expr                              ( id ) $                  Expr -> Term ExprPrime
-2      $ ExprPrime Term                    ( id ) $                  Term -> Factor TermPrime
-3      $ ExprPrime TermPrime Factor        ( id ) $                  Factor -> ( Expr )
-4      $ ExprPrime TermPrime ) Expr (      ( id ) $                  Match '('
-5      $ ExprPrime TermPrime ) Expr        id ) $                    Expr -> Term ExprPrime
-6      $ ExprPrime TermPrime ) ExprPrime Term id ) $                    Term -> Factor TermPrime
-7      $ ExprPrime TermPrime ) ExprPrime TermPrime Factor id ) $                    Factor -> id
-8      $ ExprPrime TermPrime ) ExprPrime TermPrime id id ) $                    Match 'id'
-9      $ ExprPrime TermPrime ) ExprPrime TermPrime ) $                       TermPrime -> epsilon
-10     $ ExprPrime TermPrime ) ExprPrime   ) $                       ExprPrime -> epsilon
-11     $ ExprPrime TermPrime )             ) $                       Match ')'
-12     $ ExprPrime TermPrime               $                         TermPrime -> epsilon
-13     $ ExprPrime                         $                         ExprPrime -> epsilon
+1      $ Expr                              ( id ) $                  Expr -> Term Expr'
+2      $ Expr' Term                        ( id ) $                  Term -> Factor Term'
+3      $ Expr' Term' Factor                ( id ) $                  Factor -> ( Expr )
+4      $ Expr' Term' ) Expr (              ( id ) $                  Match '('
+5      $ Expr' Term' ) Expr                id ) $                    Expr -> Term Expr'
+6      $ Expr' Term' ) Expr' Term          id ) $                    Term -> Factor Term'
+7      $ Expr' Term' ) Expr' Term' Factor  id ) $                    Factor -> id
+8      $ Expr' Term' ) Expr' Term' id      id ) $                    Match 'id'
+9      $ Expr' Term' ) Expr' Term'         ) $                       Term' -> epsilon
+10     $ Expr' Term' ) Expr'               ) $                       Expr' -> epsilon
+11     $ Expr' Term' )                     ) $                       Match ')'
+12     $ Expr' Term'                       $                         Term' -> epsilon
+13     $ Expr'                             $                         Expr' -> epsilon
 14     $                                   $                         ACCEPT
 
 Result: ACCEPTED

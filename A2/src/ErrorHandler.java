@@ -1,15 +1,7 @@
 import java.util.*;
 
-/**
- * ErrorHandler.java
- * Handles error detection and recovery during LL(1) parsing.
- * Implements Panic Mode Recovery using FOLLOW sets as synchronizing tokens.
- */
 public class ErrorHandler {
 
-    /**
-     * Represents a single parsing error.
-     */
     public static class ParseError {
         public int lineNumber;
         public int position;
@@ -46,11 +38,29 @@ public class ErrorHandler {
     }
 
     private Grammar grammar;
+    private FirstFollow firstFollow;
+    private Map<String, Map<String, List<String>>> parsingTable;
     private List<ParseError> errors;
 
     public ErrorHandler(Grammar grammar) {
         this.grammar = grammar;
+        this.firstFollow = null;
+        this.parsingTable = null;
         this.errors = new ArrayList<>();
+    }
+
+    public ErrorHandler(Grammar grammar, FirstFollow firstFollow,
+                        Map<String, Map<String, List<String>>> parsingTable) {
+        this.grammar = grammar;
+        this.firstFollow = firstFollow;
+        this.parsingTable = parsingTable;
+        this.errors = new ArrayList<>();
+    }
+
+    public void setContext(FirstFollow firstFollow,
+                           Map<String, Map<String, List<String>>> parsingTable) {
+        this.firstFollow = firstFollow;
+        this.parsingTable = parsingTable;
     }
 
     public List<ParseError> getErrors() {
@@ -65,13 +75,6 @@ public class ErrorHandler {
         errors.clear();
     }
 
-    // -----------------------------------------------------------------------
-    // Error Reporting
-    // -----------------------------------------------------------------------
-
-    /**
-     * Report a terminal mismatch error (expected terminal != found terminal).
-     */
     public void reportTerminalMismatch(int lineNum, int pos, String expected, String found) {
         ParseError err = new ParseError(lineNum, pos,
             "Missing Symbol",
@@ -80,11 +83,7 @@ public class ErrorHandler {
         errors.add(err);
     }
 
-    /**
-     * Report an empty table entry error (no production for M[X, a]).
-     */
     public void reportEmptyTableEntry(int lineNum, int pos, String nonTerminal, String found) {
-        // Determine what was expected from the parsing table
         Set<String> expectedSet = getExpectedTerminals(nonTerminal);
         String expectedStr = String.join(" or ", expectedSet);
 
@@ -95,9 +94,6 @@ public class ErrorHandler {
         errors.add(err);
     }
 
-    /**
-     * Report premature end of input.
-     */
     public void reportPrematureEnd(int lineNum, int pos, String stackTop) {
         ParseError err = new ParseError(lineNum, pos,
             "Premature End of Input",
@@ -106,32 +102,23 @@ public class ErrorHandler {
         errors.add(err);
     }
 
-    // -----------------------------------------------------------------------
-    // Panic Mode Recovery
-    // -----------------------------------------------------------------------
-
-    /**
-     * Perform panic mode recovery when an empty table entry is encountered.
-     * Strategy:
-     *   1. Find synchronizing tokens = FOLLOW(nonTerminal) ∪ {$}
-     *   2. Skip input symbols until a synchronizing token is found
-     *   3. Pop the non-terminal from the stack
-     *
-     * Returns the number of input tokens skipped.
-     */
     public int panicModeRecovery(String nonTerminal, List<String> input, int inputPtr,
                                   Stack stack, StringBuilder traceLog) {
         Set<String> syncTokens = new LinkedHashSet<>();
 
-        // Synchronizing tokens = FOLLOW(nonTerminal) + terminals that have entries
-        Set<String> followSet = grammar.followSets.getOrDefault(nonTerminal, new LinkedHashSet<>());
+        Set<String> followSet = new LinkedHashSet<>();
+        if (firstFollow != null) {
+            followSet = firstFollow.getFollow().getOrDefault(nonTerminal, new LinkedHashSet<>());
+        }
         syncTokens.addAll(followSet);
 
-        // Also add terminals that appear in the parsing table row for this NT
-        Map<String, Integer> row = grammar.parsingTable.get(nonTerminal);
+        Map<String, List<String>> row = null;
+        if (parsingTable != null) {
+            row = parsingTable.get(nonTerminal);
+        }
         if (row != null) {
-            for (Map.Entry<String, Integer> entry : row.entrySet()) {
-                if (entry.getValue() >= 0) {
+            for (Map.Entry<String, List<String>> entry : row.entrySet()) {
+                if (entry.getValue() != null && !entry.getValue().isEmpty()) {
                     syncTokens.add(entry.getKey());
                 }
             }
@@ -140,10 +127,8 @@ public class ErrorHandler {
         int skipped = 0;
         int currentPtr = inputPtr;
 
-        // Check if current input is already a sync token
         if (currentPtr < input.size()) {
             String currentSym = input.get(currentPtr);
-            // If current symbol is in FOLLOW set, pop the non-terminal (insert epsilon)
             if (followSet.contains(currentSym) || currentSym.equals("$")) {
                 traceLog.append("  Recovery: Popping '").append(nonTerminal)
                         .append("' (treating as epsilon)\n");
@@ -152,7 +137,6 @@ public class ErrorHandler {
             }
         }
 
-        // Skip input tokens until a sync token is found
         while (currentPtr < input.size()) {
             String sym = input.get(currentPtr);
             if (syncTokens.contains(sym)) {
@@ -163,7 +147,6 @@ public class ErrorHandler {
             skipped++;
         }
 
-        // Pop the non-terminal from the stack
         if (!stack.isEmpty() && stack.top().equals(nonTerminal)) {
             stack.pop();
             traceLog.append("  Recovery: Popped '").append(nonTerminal).append("' from stack\n");
@@ -172,46 +155,37 @@ public class ErrorHandler {
         return skipped;
     }
 
-    /**
-     * Recover from a terminal mismatch.
-     * Strategy: Pop the expected terminal from the stack (insert the missing symbol).
-     */
     public void recoverTerminalMismatch(Stack stack, StringBuilder traceLog) {
         String expected = stack.pop();
         traceLog.append("  Recovery: Inserted missing '").append(expected).append("'\n");
     }
 
-    // -----------------------------------------------------------------------
-    // Helper methods
-    // -----------------------------------------------------------------------
-
-    /**
-     * Get the set of terminals expected for a given non-terminal
-     * (terminals that have entries in the parsing table row).
-     */
     private Set<String> getExpectedTerminals(String nonTerminal) {
         Set<String> expected = new LinkedHashSet<>();
-        Map<String, Integer> row = grammar.parsingTable.get(nonTerminal);
+        Map<String, List<String>> row = null;
+        if (parsingTable != null) {
+            row = parsingTable.get(nonTerminal);
+        }
         if (row != null) {
-            for (Map.Entry<String, Integer> entry : row.entrySet()) {
-                if (entry.getValue() >= 0) {
+            for (Map.Entry<String, List<String>> entry : row.entrySet()) {
+                if (entry.getValue() != null && !entry.getValue().isEmpty()) {
                     expected.add(entry.getKey());
                 }
             }
         }
         if (expected.isEmpty()) {
-            // Fallback: use FIRST set
-            Set<String> first = grammar.firstSets.getOrDefault(nonTerminal, new LinkedHashSet<>());
-            for (String s : first) {
-                if (!s.equals("epsilon")) expected.add(s);
+            if (firstFollow != null) {
+                Set<String> first = firstFollow.getFirst().getOrDefault(nonTerminal, new LinkedHashSet<>());
+                for (String s : first) {
+                    if (!s.equals("epsilon")) {
+                        expected.add(s);
+                    }
+                }
             }
         }
         return expected;
     }
 
-    /**
-     * Print all errors collected during parsing.
-     */
     public void printErrors() {
         if (errors.isEmpty()) {
             System.out.println("  No errors detected.");
@@ -226,9 +200,6 @@ public class ErrorHandler {
         System.out.println("Total errors: " + errors.size());
     }
 
-    /**
-     * Save errors to a PrintWriter.
-     */
     public void saveErrors(java.io.PrintWriter pw) {
         if (errors.isEmpty()) {
             pw.println("  No errors detected.");

@@ -1,7 +1,5 @@
-Transformed Grammar
-============================================================
-Expr -> Term ExprPrime
-ExprPrime -> + Term ExprPrime | epsilon
-Term -> Factor TermPrime
-TermPrime -> * Factor TermPrime | epsilon
+Expr -> Term Expr'
+Expr' -> + Term Expr' | epsilon
+Term -> Factor Term'
+Term' -> * Factor Term' | epsilon
 Factor -> ( Expr ) | id

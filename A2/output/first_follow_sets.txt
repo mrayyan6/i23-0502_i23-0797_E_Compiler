@@ -1,19 +1,7 @@
-FIRST Sets
-============================================================
-Non-Terminal         FIRST Set
-------------------------------------------------------------
-Expr                 { (, id }
-ExprPrime            { +, epsilon }
-Term                 { (, id }
-TermPrime            { *, epsilon }
-Factor               { (, id }
-
-FOLLOW Sets
-============================================================
-Non-Terminal         FOLLOW Set
-------------------------------------------------------------
-Expr                 { $, ) }
-ExprPrime            { $, ) }
-Term                 { +, $, ) }
-TermPrime            { +, $, ) }
-Factor               { *, +, $, ) }
+Non-Terminal   FIRST                          FOLLOW                        
+----------------------------------------------------------------------------
+Expr           {   (, id     }                {   $, )   }                  
+Expr'          {   +, epsilon     }           {   $, )   }                  
+Term           {   (, id     }                {   +, $, )   }               
+Term'          {   *, epsilon     }           {   +, $, )   }               
+Factor         {   (, id     }                {   *, +, $, )   }            

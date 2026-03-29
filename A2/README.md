@@ -2,29 +2,41 @@
 ## CS4031 - Compiler Construction - Assignment 02
 
 ### Team Members
-- RollNumber1 - Name1
-- RollNumber2 - Name2
-- Section: A
+I23-0502 - Rayyan
+I23-0797 - Hassan
+Section: E
 
 ### Programming Language
 Java (JDK 17+)
 
 ### Compilation Instructions
 ```bash
-cd src/
-javac *.java
+cd A2/src
+javac -d ../classes *.java
 ```
+
+All compiled `.class` files are redirected to `A2/classes`.
 
 ### Execution Instructions
 ```bash
+cd A2
+
 # Run with specific grammar and input files:
-java -cp . Main <grammar_file> <input_file>
+java -cp ./classes Main ./input/grammar1.txt ./input/input_valid.txt
 
 # Example:
-java -cp . Main ../input/grammar1.txt ../input/input_valid.txt
+java -cp ./classes Main ./input/grammar2.txt ./input/input_errors.txt
 
 # Run with defaults (input/grammar1.txt and input/input_valid.txt):
-java -cp . Main
+java -cp ./classes Main
+```
+
+Optional clean build (PowerShell):
+```powershell
+Remove-Item .\classes\*.class -Force -ErrorAction SilentlyContinue
+cd .\src
+javac -d ..\classes *.java
+cd ..
 ```
 
 ### Input File Formats

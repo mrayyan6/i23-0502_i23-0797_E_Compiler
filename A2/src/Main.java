@@ -1,132 +1,149 @@
 import java.io.*;
 import java.util.*;
 
-/**
- * Main.java
- * Entry point for the LL(1) Parser.
- * 
- * Usage:
- *   java Main <grammar_file> <input_file>
- *   java Main                                (uses default files)
- * 
- * The program:
- *   1. Reads a CFG from a file
- *   2. Applies left factoring and left recursion removal
- *   3. Computes FIRST and FOLLOW sets
- *   4. Builds the LL(1) parsing table
- *   5. Parses input strings with step-by-step traces
- *   6. Handles errors with panic mode recovery
- *   7. Generates parse trees for accepted strings
- */
-public class Main {
+public class Main
+{
+    public static void main(String[] args)
+    {
+        File cwd = new File(System.getProperty("user.dir"));
+        File projectRoot = cwd.getName().equalsIgnoreCase("src") ? cwd.getParentFile() : cwd;
 
-    public static void main(String[] args) {
-        String grammarFile = "input/grammar1.txt";
-        String inputFile = "input/input_valid.txt";
+        String grammarFile = new File(projectRoot, "input/grammar1.txt").getPath();
+        String inputFile = new File(projectRoot, "input/input_valid.txt").getPath();
+        String outputDir = new File(projectRoot, "output").getPath();
 
-        if (args.length >= 2) {
+        if (args.length >= 2)
+        {
             grammarFile = args[0];
             inputFile = args[1];
-        } else if (args.length == 1) {
+        }
+        else if (args.length == 1)
+        {
             grammarFile = args[0];
         }
 
-        System.out.println("╔══════════════════════════════════════════════════════════╗");
-        System.out.println("║           LL(1) Predictive Parser                       ║");
-        System.out.println("║           CS4031 - Compiler Construction                ║");
-        System.out.println("╚══════════════════════════════════════════════════════════╝");
-        System.out.println();
+        System.out.println("===========================================");
+        System.out.println(" LL(1) Predictive Parser - Part 1 + Part 2");
+        System.out.println("===========================================");
         System.out.println("Grammar file: " + grammarFile);
         System.out.println("Input file:   " + inputFile);
+        System.out.println();
 
-        // ---------------------------------------------------------------
-        // Part 1: Grammar Transformation & Table Construction
-        // ---------------------------------------------------------------
-        Grammar grammar = new Grammar();
-        if (!grammar.readFromFile(grammarFile)) {
-            System.err.println("Failed to read grammar file: " + grammarFile);
-            System.exit(1);
-        }
+        try
+        {
+            System.out.println("[1] Parsing grammar from file...");
+            Grammar g = new Grammar(grammarFile);
+            System.out.println("    Original Grammar:");
+            System.out.println(indent(g.toString()));
 
-        grammar.printGrammar("Original Grammar");
+            System.out.println("[2] Applying Left Factoring...");
+            g.leftFactor();
+            System.out.println("    Grammar after Left Factoring:");
+            System.out.println(indent(g.toString()));
 
-        // Left Factoring
-        grammar.applyLeftFactoring();
-        grammar.printGrammar("After Left Factoring");
+            System.out.println("[3] Removing Left Recursion (direct + indirect)...");
+            g.removeLeftRec();
+            System.out.println("    Grammar after Left Recursion Removal:");
+            System.out.println(indent(g.toString()));
 
-        // Left Recursion Removal
-        grammar.removeLeftRecursion();
-        grammar.printGrammar("After Left Recursion Removal");
-
-        // FIRST and FOLLOW
-        FirstFollow ff = new FirstFollow(grammar);
-        ff.computeAll();
-        ff.printFirstSets();
-        ff.printFollowSets();
-
-        // Parsing Table
-        grammar.buildParsingTable();
-        grammar.printParsingTable();
-
-        // Check if grammar is LL(1)
-        if (!grammar.isLL1) {
-            System.out.println("\nWARNING: Grammar is NOT LL(1). Parsing may produce incorrect results.");
-            System.out.println("Conflicts exist in the parsing table.");
-        }
-
-        // Save Part 1 outputs
-        new File("output").mkdirs();
-        grammar.saveTransformedGrammar("output/grammar_transformed.txt");
-        grammar.saveFirstFollowSets("output/first_follow_sets.txt");
-        grammar.saveParsingTable("output/parsing_table.txt");
-
-        // ---------------------------------------------------------------
-        // Part 2: Stack-Based Parser
-        // ---------------------------------------------------------------
-        System.out.println("\n" + "═".repeat(80));
-        System.out.println("PART 2: STACK-BASED PARSING");
-        System.out.println("═".repeat(80));
-
-        Parser parser = new Parser(grammar);
-
-        // Check if input file exists
-        File inFile = new File(inputFile);
-        if (!inFile.exists()) {
-            System.err.println("Input file not found: " + inputFile);
-            System.out.println("Create an input file with one string per line.");
-            System.exit(1);
-        }
-
-        List<Parser.ParseResult> results = parser.parseFile(inputFile);
-
-        // Save outputs
-        parser.saveTraces(results, "output/parsing_trace1.txt");
-        parser.saveParseTrees(results, "output/parse_trees.txt");
-
-        // Summary
-        System.out.println("\n" + "═".repeat(60));
-        System.out.println("PARSING SUMMARY");
-        System.out.println("═".repeat(60));
-        int accepted = 0, rejected = 0;
-        for (Parser.ParseResult r : results) {
-            String status = r.accepted ? "ACCEPTED" : "REJECTED";
-            System.out.printf("  %-30s  %s", r.inputString, status);
-            if (!r.accepted) {
-                System.out.printf(" (%d error(s))", r.errorCount);
-            }
+            String transformedPath = new File(outputDir, "grammar_transformed.txt").getPath();
+            g.writeFile(transformedPath);
+            System.out.println("    -> Transformed grammar written to: " + transformedPath);
             System.out.println();
-            if (r.accepted) accepted++;
-            else rejected++;
-        }
-        System.out.println("-".repeat(60));
-        System.out.println("  Total: " + results.size() + " | Accepted: " + accepted +
-                           " | Rejected: " + rejected);
 
-        System.out.println("\nOutput files saved to output/ directory:");
-        System.out.println("  - grammar_transformed.txt");
-        System.out.println("  - first_follow_sets.txt");
-        System.out.println("  - parsing_table.txt");
-        System.out.println("  - parsing_trace1.txt");
-        System.out.println("  - parse_trees.txt");
+            System.out.println("[4] Computing FIRST and FOLLOW sets...");
+            FirstFollow ff = new FirstFollow(g);
+            System.out.println(indent(ff.toString()));
+
+            String firstFollowPath = new File(outputDir, "first_follow_sets.txt").getPath();
+            writeFile(firstFollowPath, ff.toString());
+            System.out.println("    -> FIRST/FOLLOW sets written to: " + firstFollowPath);
+            System.out.println();
+
+            System.out.println("[5] Building LL(1) Parsing Table...");
+            Parser parser = new Parser(g, ff);
+            System.out.println(indent(parser.toString()));
+
+            String tablePath = new File(outputDir, "parsing_table.txt").getPath();
+            parser.writeFile(tablePath);
+            System.out.println("    -> Parsing table written to: " + tablePath);
+            System.out.println();
+
+            System.out.println("===========================================");
+            if (parser.hasConflict())
+            {
+                System.out.println(" Result: Grammar is NOT LL(1).");
+                System.out.println(" See parsing_table.txt for conflict details.");
+            }
+            else
+            {
+                System.out.println(" Result: Grammar IS LL(1).");
+            }
+            System.out.println("===========================================");
+
+            System.out.println("\n" + "=".repeat(80));
+            System.out.println("PART 2: STACK-BASED PARSING");
+            System.out.println("=".repeat(80));
+
+            File inFile = new File(inputFile);
+            if (!inFile.exists())
+            {
+                System.err.println("Input file not found: " + inputFile);
+                System.exit(1);
+            }
+
+            List<Parser.ParseResult> results = parser.parseFile(inputFile);
+            parser.saveTraces(results, new File(outputDir, "parsing_trace1.txt").getPath());
+            parser.saveParseTrees(results, new File(outputDir, "parse_trees.txt").getPath());
+
+            int accepted = 0;
+            int rejected = 0;
+            for (Parser.ParseResult r : results)
+            {
+                if (r.accepted)
+                {
+                    accepted++;
+                }
+                else
+                {
+                    rejected++;
+                }
+            }
+
+            System.out.println("\n" + "=".repeat(60));
+            System.out.println("PARSING SUMMARY");
+            System.out.println("=".repeat(60));
+            System.out.println("  Total: " + results.size() + " | Accepted: " + accepted + " | Rejected: " + rejected);
+            System.out.println("\nOutput files saved to output/ directory:");
+            System.out.println("  - grammar_transformed.txt");
+            System.out.println("  - first_follow_sets.txt");
+            System.out.println("  - parsing_table.txt");
+            System.out.println("  - parsing_trace1.txt");
+            System.out.println("  - parse_trees.txt");
+        }
+        catch (IOException e)
+        {
+            System.err.println("ERROR: " + e.getMessage());
+            System.exit(1);
+        }
+    }
+
+    private static String indent(String text)
+    {
+        StringBuilder out = new StringBuilder();
+        for (String line : text.split("\n"))
+        {
+            out.append("    ").append(line).append("\n");
+        }
+        return out.toString();
+    }
+
+    private static void writeFile(String path, String txt) throws IOException
+    {
+        File f = new File(path);
+        f.getParentFile().mkdirs();
+        BufferedWriter bw = new BufferedWriter(new FileWriter(path));
+        bw.write(txt);
+        bw.close();
     }
 }

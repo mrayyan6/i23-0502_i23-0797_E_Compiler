@@ -1,11 +1,9 @@
-LL(1) Parsing Table
-================================================================================
-                  | (                 | )                 | id                | +                 | *                 | $                 |
--------------------------------------------------------------------------------------------------------------------------------------------
-Expr              | Expr->Term ExprPrime|                   | Expr->Term ExprPrime|                   |                   |                   |
-ExprPrime         |                   | ExprPrime->epsilon|                   | ExprPrime->+ Term ExprPrime|                   | ExprPrime->epsilon|
-Term              | Term->Factor TermPrime|                   | Term->Factor TermPrime|                   |                   |                   |
-TermPrime         |                   | TermPrime->epsilon|                   | TermPrime->epsilon| TermPrime->* Factor TermPrime| TermPrime->epsilon|
-Factor            | Factor->( Expr )  |                   | Factor->id        |                   |                   |                   |
+              | (                          | )                          | id                         | +                          | *                          | $                          |
+--------------+----------------------------+----------------------------+----------------------------+----------------------------+----------------------------+----------------------------+
+Expr          | Expr -> Term Expr'         |                            | Expr -> Term Expr'         |                            |                            |                            |
+Expr'         |                            | Expr' -> epsilon           |                            | Expr' -> + Term Expr'      |                            | Expr' -> epsilon           |
+Term          | Term -> Factor Term'       |                            | Term -> Factor Term'       |                            |                            |                            |
+Term'         |                            | Term' -> epsilon           |                            | Term' -> epsilon           | Term' -> * Factor Term'    | Term' -> epsilon           |
+Factor        | Factor -> ( Expr )         |                            | Factor -> id               |                            |                            |                            |
 
-Grammar is LL(1)
+Grammar is LL(1). No conflicts detected.
