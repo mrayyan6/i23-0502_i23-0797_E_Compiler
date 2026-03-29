@@ -22,13 +22,13 @@ All compiled `.class` files are redirected to `A2/classes`.
 cd A2
 
 # Run with specific grammar and input files:
-java -cp ./classes Main ./input/grammar1.txt ./input/input_valid.txt
+java -cp ../classes Main ../input/grammar1.txt ../input/input_valid.txt
 
 # Example:
-java -cp ./classes Main ./input/grammar2.txt ./input/input_errors.txt
+java -cp ../classes Main ../input/grammar2.txt ../input/input_errors.txt
 
 # Run with defaults (input/grammar1.txt and input/input_valid.txt):
-java -cp ./classes Main
+java -cp ../classes Main
 ```
 
 Optional clean build (PowerShell):
