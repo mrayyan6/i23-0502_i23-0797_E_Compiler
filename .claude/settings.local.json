@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(java -cp out Main grammar.txt)",
-      "Bash(javac src/*.java -d out)",
-      "Bash(java -cp out Main1 grammar.txt lr1_states.txt)"
-    ]
-  }
-}
