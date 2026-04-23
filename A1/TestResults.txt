@@ -1,4 +1,4 @@
-
+test3
 --- Running tests/test1.lang ---
 ||============================================================||
 ||                        TOKEN STREAM                        ||
@@ -779,7 +779,8 @@
   <DECLARE, "declare", Line: 15, Col: 5>
   <IDENTIFIER, "Broken", Line: 15, Col: 13>
   <ASSIGN, "=", Line: 15, Col: 20>
-  <ERROR, ""this string never ends;", Line: 15, Col: 22>
+  <ERROR, ""this string never ends;
+", Line: 15, Col: 22>
   <DECLARE, "declare", Line: 18, Col: 5>
   <IDENTIFIER, "Esc", Line: 18, Col: 13>
   <ASSIGN, "=", Line: 18, Col: 17>
@@ -793,7 +794,8 @@
   <DECLARE, "declare", Line: 24, Col: 5>
   <IDENTIFIER, "Ch", Line: 24, Col: 13>
   <ASSIGN, "=", Line: 24, Col: 16>
-  <ERROR, "'", Line: 24, Col: 18>
+  <ERROR, "'
+", Line: 24, Col: 18>
   <DECLARE, "declare", Line: 27, Col: 5>
   <IDENTIFIER, "Empty", Line: 27, Col: 13>
   <ASSIGN, "=", Line: 27, Col: 19>
@@ -838,10 +840,12 @@
 ||  <ERROR, "invalidVar", Line: 6, Col: 13>
 ||  <ERROR, "@", Line: 9, Col: 24>
 ||  <ERROR, "3.1234567", Line: 12, Col: 25>
-||  <ERROR, ""this string never ends;", Line: 15, Col: 22>
+||  <ERROR, ""this string never ends;
+", Line: 15, Col: 22>
 ||  <ERROR, ""bad \x escape"", Line: 18, Col: 19>
 ||  <ERROR, "Abcdefghijklmnopqrstuvwxyz_extra", Line: 21, Col: 13>
-||  <ERROR, "'", Line: 24, Col: 18>
+||  <ERROR, "'
+", Line: 24, Col: 18>
 ||  <ERROR, "''", Line: 27, Col: 21>
 ||  <ERROR, "'ab'", Line: 30, Col: 21>
 ||  <ERROR, "~", Line: 33, Col: 21>
