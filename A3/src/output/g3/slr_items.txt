@@ -1,0 +1,68 @@
+LR(0) / SLR(1) Canonical Collection
+Total states: 10
+============================================================
+
+State 0:
+  Start -> • Lhs = Rhs
+  Lhs -> • * Rhs
+  Lhs -> • id
+  Start' -> • Start
+  Rhs -> • Lhs
+  Start -> • Rhs
+  Transitions: {Start=1, Lhs=2, Rhs=3, *=4, id=5}
+  Goto:
+    Start -> State 1
+    Lhs -> State 2
+    Rhs -> State 3
+    * -> State 4
+    id -> State 5
+------------------------------------------------------------
+State 1:
+  Start' -> Start •
+------------------------------------------------------------
+State 2:
+  Start -> Lhs • = Rhs
+  Rhs -> Lhs •
+  Transitions: {==6}
+  Goto:
+    = -> State 6
+------------------------------------------------------------
+State 3:
+  Start -> Rhs •
+------------------------------------------------------------
+State 4:
+  Lhs -> • * Rhs
+  Lhs -> • id
+  Lhs -> * • Rhs
+  Rhs -> • Lhs
+  Transitions: {Lhs=7, Rhs=8, *=4, id=5}
+  Goto:
+    Lhs -> State 7
+    Rhs -> State 8
+    * -> State 4
+    id -> State 5
+------------------------------------------------------------
+State 5:
+  Lhs -> id •
+------------------------------------------------------------
+State 6:
+  Lhs -> • * Rhs
+  Start -> Lhs = • Rhs
+  Lhs -> • id
+  Rhs -> • Lhs
+  Transitions: {Lhs=7, Rhs=9, *=4, id=5}
+  Goto:
+    Lhs -> State 7
+    Rhs -> State 9
+    * -> State 4
+    id -> State 5
+------------------------------------------------------------
+State 7:
+  Rhs -> Lhs •
+------------------------------------------------------------
+State 8:
+  Lhs -> * Rhs •
+------------------------------------------------------------
+State 9:
+  Start -> Lhs = Rhs •
+------------------------------------------------------------

@@ -1,0 +1,3 @@
+Start -> Lhs = Rhs | Rhs
+Lhs -> * Rhs | id
+Rhs -> Lhs

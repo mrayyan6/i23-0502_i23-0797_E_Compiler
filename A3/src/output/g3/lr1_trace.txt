@@ -1,0 +1,118 @@
+INPUT: id
+--------------------------------------------------------------------------------------------------------------
+Step   Stack                                         Input                          Action
+--------------------------------------------------------------------------------------------------------------
+1      0                                             id $                           shift 5
+2      0 id 5                                        $                              reduce 4  (Lhs -> id)
+3      0 Lhs 2                                       $                              reduce 5  (Rhs -> Lhs)
+4      0 Rhs 3                                       $                              reduce 2  (Start -> Rhs)
+5      0 Start 1                                     $                              accept
+Result: ACCEPTED
+
+INPUT: * id
+--------------------------------------------------------------------------------------------------------------
+Step   Stack                                         Input                          Action
+--------------------------------------------------------------------------------------------------------------
+1      0                                             * id $                         shift 4
+2      0 * 4                                         id $                           shift 5
+3      0 * 4 id 5                                    $                              reduce 4  (Lhs -> id)
+4      0 * 4 Lhs 7                                   $                              reduce 5  (Rhs -> Lhs)
+5      0 * 4 Rhs 8                                   $                              reduce 3  (Lhs -> * Rhs)
+6      0 Lhs 2                                       $                              reduce 5  (Rhs -> Lhs)
+7      0 Rhs 3                                       $                              reduce 2  (Start -> Rhs)
+8      0 Start 1                                     $                              accept
+Result: ACCEPTED
+
+INPUT: id = id
+--------------------------------------------------------------------------------------------------------------
+Step   Stack                                         Input                          Action
+--------------------------------------------------------------------------------------------------------------
+1      0                                             id = id $                      shift 5
+2      0 id 5                                        = id $                         reduce 4  (Lhs -> id)
+3      0 Lhs 2                                       = id $                         shift 6
+4      0 Lhs 2 = 6                                   id $                           shift 12
+5      0 Lhs 2 = 6 id 12                             $                              reduce 4  (Lhs -> id)
+6      0 Lhs 2 = 6 Lhs 9                             $                              reduce 5  (Rhs -> Lhs)
+7      0 Lhs 2 = 6 Rhs 10                            $                              reduce 1  (Start -> Lhs = Rhs)
+8      0 Start 1                                     $                              accept
+Result: ACCEPTED
+
+INPUT: * id = id
+--------------------------------------------------------------------------------------------------------------
+Step   Stack                                         Input                          Action
+--------------------------------------------------------------------------------------------------------------
+1      0                                             * id = id $                    shift 4
+2      0 * 4                                         id = id $                      shift 5
+3      0 * 4 id 5                                    = id $                         reduce 4  (Lhs -> id)
+4      0 * 4 Lhs 7                                   = id $                         reduce 5  (Rhs -> Lhs)
+5      0 * 4 Rhs 8                                   = id $                         reduce 3  (Lhs -> * Rhs)
+6      0 Lhs 2                                       = id $                         shift 6
+7      0 Lhs 2 = 6                                   id $                           shift 12
+8      0 Lhs 2 = 6 id 12                             $                              reduce 4  (Lhs -> id)
+9      0 Lhs 2 = 6 Lhs 9                             $                              reduce 5  (Rhs -> Lhs)
+10     0 Lhs 2 = 6 Rhs 10                            $                              reduce 1  (Start -> Lhs = Rhs)
+11     0 Start 1                                     $                              accept
+Result: ACCEPTED
+
+INPUT: * * id = id
+--------------------------------------------------------------------------------------------------------------
+Step   Stack                                         Input                          Action
+--------------------------------------------------------------------------------------------------------------
+1      0                                             * * id = id $                  shift 4
+2      0 * 4                                         * id = id $                    shift 4
+3      0 * 4 * 4                                     id = id $                      shift 5
+4      0 * 4 * 4 id 5                                = id $                         reduce 4  (Lhs -> id)
+5      0 * 4 * 4 Lhs 7                               = id $                         reduce 5  (Rhs -> Lhs)
+6      0 * 4 * 4 Rhs 8                               = id $                         reduce 3  (Lhs -> * Rhs)
+7      0 * 4 Lhs 7                                   = id $                         reduce 5  (Rhs -> Lhs)
+8      0 * 4 Rhs 8                                   = id $                         reduce 3  (Lhs -> * Rhs)
+9      0 Lhs 2                                       = id $                         shift 6
+10     0 Lhs 2 = 6                                   id $                           shift 12
+11     0 Lhs 2 = 6 id 12                             $                              reduce 4  (Lhs -> id)
+12     0 Lhs 2 = 6 Lhs 9                             $                              reduce 5  (Rhs -> Lhs)
+13     0 Lhs 2 = 6 Rhs 10                            $                              reduce 1  (Start -> Lhs = Rhs)
+14     0 Start 1                                     $                              accept
+Result: ACCEPTED
+
+INPUT: id = * id
+--------------------------------------------------------------------------------------------------------------
+Step   Stack                                         Input                          Action
+--------------------------------------------------------------------------------------------------------------
+1      0                                             id = * id $                    shift 5
+2      0 id 5                                        = * id $                       reduce 4  (Lhs -> id)
+3      0 Lhs 2                                       = * id $                       shift 6
+4      0 Lhs 2 = 6                                   * id $                         shift 11
+5      0 Lhs 2 = 6 * 11                              id $                           shift 12
+6      0 Lhs 2 = 6 * 11 id 12                        $                              reduce 4  (Lhs -> id)
+7      0 Lhs 2 = 6 * 11 Lhs 9                        $                              reduce 5  (Rhs -> Lhs)
+8      0 Lhs 2 = 6 * 11 Rhs 13                       $                              reduce 3  (Lhs -> * Rhs)
+9      0 Lhs 2 = 6 Lhs 9                             $                              reduce 5  (Rhs -> Lhs)
+10     0 Lhs 2 = 6 Rhs 10                            $                              reduce 1  (Start -> Lhs = Rhs)
+11     0 Start 1                                     $                              accept
+Result: ACCEPTED
+
+INPUT: = id
+--------------------------------------------------------------------------------------------------------------
+Step   Stack                                         Input                          Action
+--------------------------------------------------------------------------------------------------------------
+1      0                                             = id $                         ERROR: No action for state 0 on symbol '='
+Result: REJECTED - No action for state 0 on symbol '='
+
+INPUT: id =
+--------------------------------------------------------------------------------------------------------------
+Step   Stack                                         Input                          Action
+--------------------------------------------------------------------------------------------------------------
+1      0                                             id = $                         shift 5
+2      0 id 5                                        = $                            reduce 4  (Lhs -> id)
+3      0 Lhs 2                                       = $                            shift 6
+4      0 Lhs 2 = 6                                   $                              ERROR: No action for state 6 on symbol '$'
+Result: REJECTED - No action for state 6 on symbol '$'
+
+INPUT: * = id
+--------------------------------------------------------------------------------------------------------------
+Step   Stack                                         Input                          Action
+--------------------------------------------------------------------------------------------------------------
+1      0                                             * = id $                       shift 4
+2      0 * 4                                         = id $                         ERROR: No action for state 4 on symbol '='
+Result: REJECTED - No action for state 4 on symbol '='
+

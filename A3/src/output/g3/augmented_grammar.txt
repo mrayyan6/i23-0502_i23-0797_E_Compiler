@@ -1,0 +1,9 @@
+Augmented Grammar
+Start symbol: Start   Augmented start: Start'
+Productions (index: production):
+  0:  Start' -> Start
+  1:  Start -> Lhs = Rhs
+  2:  Start -> Rhs
+  3:  Lhs -> * Rhs
+  4:  Lhs -> id
+  5:  Rhs -> Lhs

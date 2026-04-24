@@ -1,0 +1,22 @@
+LR(1) Parsing Table
+Total states: 14
+================================================================================
+
+State   =                   *                   id                  $                   Start          Lhs            Rhs            
+-------------------------------------------------------------------------------------------------------------------------------------
+0                           shift 4             shift 5                                 1              2              3              
+1                                                                   accept                                                           
+2       shift 6                                                     reduce 5                                                         
+3                                                                   reduce 2                                                         
+4                           shift 4             shift 5                                                7              8              
+5       reduce 4                                                    reduce 4                                                         
+6                           shift 11            shift 12                                               9              10             
+7       reduce 5                                                    reduce 5                                                         
+8       reduce 3                                                    reduce 3                                                         
+9                                                                   reduce 5                                                         
+10                                                                  reduce 1                                                         
+11                          shift 11            shift 12                                               9              13             
+12                                                                  reduce 4                                                         
+13                                                                  reduce 3                                                         
+
+Grammar is LR(1) -- no conflicts detected.

@@ -1,0 +1,11 @@
+# L=R grammar test inputs
+id
+* id
+id = id
+* id = id
+* * id = id
+id = * id
+# --- invalid ---
+= id
+id =
+* = id

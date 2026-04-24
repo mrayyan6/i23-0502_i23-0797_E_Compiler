@@ -1,0 +1,19 @@
+SLR(1) Parsing Table
+Total states: 10
+================================================================================
+
+State   =                   *                   id                  $                   Start          Lhs            Rhs            
+-------------------------------------------------------------------------------------------------------------------------------------
+0                           shift 4             shift 5                                 1              2              3              
+1                                                                   accept                                                           
+2       shift 6 / reduce 5                                          reduce 5                                                         
+3                                                                   reduce 2                                                         
+4                           shift 4             shift 5                                                7              8              
+5       reduce 4                                                    reduce 4                                                         
+6                           shift 4             shift 5                                                7              9              
+7       reduce 5                                                    reduce 5                                                         
+8       reduce 3                                                    reduce 3                                                         
+9                                                                   reduce 1                                                         
+
+SLR(1) Conflicts:
+  SHIFT-REDUCE conflict in state 2 on symbol '=': existing='shift 6' vs new='reduce 5'

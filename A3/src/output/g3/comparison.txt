@@ -1,0 +1,24 @@
+SLR(1) vs LR(1) Comparison Report
+Grammar file : grammar3.txt
+Inputs tested: 9
+======================================================================
+
+Metric                           SLR(1)             LR(1)             
+----------------------------------------------------------------------
+States                           10                 14                
+Non-empty ACTION cells           17                 22                
+Non-empty GOTO cells             7                  9                 
+Conflicts                        1                  0                 
+Table build time (ms)            8.428              2.924             
+Total parse time (ms)            2.180              1.248             
+Accepted inputs                  6/9                6/9               
+
+----- SLR(1) Conflicts -----
+  SHIFT-REDUCE conflict in state 2 on symbol '=': existing='shift 6' vs new='reduce 5'
+
+----- LR(1) Conflicts -----
+  (none)
+
+----- Verdict -----
+SLR(1) has 1 conflict(s) but LR(1) has none.
+This grammar is LR(1) but NOT SLR(1) -- a direct demonstration that LR(1) is strictly more powerful.  SLR(1) over-approximates reduction lookaheads with FOLLOW(A), which here includes symbols that are not valid lookaheads in the specific state.  LR(1) tracks the actual valid lookahead per item and so avoids the spurious conflict.
