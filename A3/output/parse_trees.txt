@@ -1,0 +1,181 @@
+INPUT: id + id * id
+--------------------------------------------------------------------------------
+SLR(1) tree:
+E
+├── E
+│   └── T
+│       └── F
+│           └── id  (terminal)
+├── +  (terminal)
+└── T
+    ├── T
+    │   └── F
+    │       └── id  (terminal)
+    ├── *  (terminal)
+    └── F
+        └── id  (terminal)
+
+LR(1)  tree:
+E
+├── E
+│   └── T
+│       └── F
+│           └── id  (terminal)
+├── +  (terminal)
+└── T
+    ├── T
+    │   └── F
+    │       └── id  (terminal)
+    ├── *  (terminal)
+    └── F
+        └── id  (terminal)
+
+
+INPUT: id * id
+--------------------------------------------------------------------------------
+SLR(1) tree:
+E
+└── T
+    ├── T
+    │   └── F
+    │       └── id  (terminal)
+    ├── *  (terminal)
+    └── F
+        └── id  (terminal)
+
+LR(1)  tree:
+E
+└── T
+    ├── T
+    │   └── F
+    │       └── id  (terminal)
+    ├── *  (terminal)
+    └── F
+        └── id  (terminal)
+
+
+INPUT: ( id + id ) * id
+--------------------------------------------------------------------------------
+SLR(1) tree:
+E
+└── T
+    ├── T
+    │   └── F
+    │       ├── (  (terminal)
+    │       ├── E
+    │       │   ├── E
+    │       │   │   └── T
+    │       │   │       └── F
+    │       │   │           └── id  (terminal)
+    │       │   ├── +  (terminal)
+    │       │   └── T
+    │       │       └── F
+    │       │           └── id  (terminal)
+    │       └── )  (terminal)
+    ├── *  (terminal)
+    └── F
+        └── id  (terminal)
+
+LR(1)  tree:
+E
+└── T
+    ├── T
+    │   └── F
+    │       ├── (  (terminal)
+    │       ├── E
+    │       │   ├── E
+    │       │   │   └── T
+    │       │   │       └── F
+    │       │   │           └── id  (terminal)
+    │       │   ├── +  (terminal)
+    │       │   └── T
+    │       │       └── F
+    │       │           └── id  (terminal)
+    │       └── )  (terminal)
+    ├── *  (terminal)
+    └── F
+        └── id  (terminal)
+
+
+INPUT: id + id + id
+--------------------------------------------------------------------------------
+SLR(1) tree:
+E
+├── E
+│   ├── E
+│   │   └── T
+│   │       └── F
+│   │           └── id  (terminal)
+│   ├── +  (terminal)
+│   └── T
+│       └── F
+│           └── id  (terminal)
+├── +  (terminal)
+└── T
+    └── F
+        └── id  (terminal)
+
+LR(1)  tree:
+E
+├── E
+│   ├── E
+│   │   └── T
+│   │       └── F
+│   │           └── id  (terminal)
+│   ├── +  (terminal)
+│   └── T
+│       └── F
+│           └── id  (terminal)
+├── +  (terminal)
+└── T
+    └── F
+        └── id  (terminal)
+
+
+INPUT: id
+--------------------------------------------------------------------------------
+SLR(1) tree:
+E
+└── T
+    └── F
+        └── id  (terminal)
+
+LR(1)  tree:
+E
+└── T
+    └── F
+        └── id  (terminal)
+
+
+INPUT: ( id )
+--------------------------------------------------------------------------------
+SLR(1) tree:
+E
+└── T
+    └── F
+        ├── (  (terminal)
+        ├── E
+        │   └── T
+        │       └── F
+        │           └── id  (terminal)
+        └── )  (terminal)
+
+LR(1)  tree:
+E
+└── T
+    └── F
+        ├── (  (terminal)
+        ├── E
+        │   └── T
+        │       └── F
+        │           └── id  (terminal)
+        └── )  (terminal)
+
+
+INPUT: id + * id
+--------------------------------------------------------------------------------
+SLR(1) tree:
+  (not accepted)
+LR(1)  tree:
+  (not accepted)
+

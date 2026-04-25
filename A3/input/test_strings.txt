@@ -1,0 +1,11 @@
+# Test strings for the conflict grammar  S -> L=R | R
+# Format: tokens separated by spaces
+# Lines starting with # are ignored
+id
+* id
+id = id
+* id = id
+id = * id
+* * id
+= id
+id = id = id

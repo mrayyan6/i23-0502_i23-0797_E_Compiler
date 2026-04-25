@@ -1,0 +1,10 @@
+# Test strings for the expression grammar
+# Format: one string per line, tokens separated by spaces
+# Lines starting with # are ignored
+id + id * id
+id * id
+( id + id ) * id
+id + id + id
+id
+( id )
+id + * id

@@ -1,0 +1,30 @@
+LR(1) Parsing Table
+Total states: 22
+================================================================================
+
+State   +                   *                   (                   )                   id                  $                   E              T              F              
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0                                               shift 4                                 shift 5                                 1              2              3              
+1       shift 6                                                                                             accept                                                           
+2       reduce 2            shift 7                                                                         reduce 2                                                         
+3       reduce 4            reduce 4                                                                        reduce 4                                                         
+4                                               shift 11                                shift 12                                8              9              10             
+5       reduce 6            reduce 6                                                                        reduce 6                                                         
+6                                               shift 4                                 shift 5                                                13             3              
+7                                               shift 4                                 shift 5                                                               14             
+8       shift 15                                                    shift 16                                                                                                 
+9       reduce 2            shift 17                                reduce 2                                                                                                 
+10      reduce 4            reduce 4                                reduce 4                                                                                                 
+11                                              shift 11                                shift 12                                18             9              10             
+12      reduce 6            reduce 6                                reduce 6                                                                                                 
+13      reduce 1            shift 7                                                                         reduce 1                                                         
+14      reduce 3            reduce 3                                                                        reduce 3                                                         
+15                                              shift 11                                shift 12                                               19             10             
+16      reduce 5            reduce 5                                                                        reduce 5                                                         
+17                                              shift 11                                shift 12                                                              20             
+18      shift 15                                                    shift 21                                                                                                 
+19      reduce 1            shift 17                                reduce 1                                                                                                 
+20      reduce 3            reduce 3                                reduce 3                                                                                                 
+21      reduce 5            reduce 5                                reduce 5                                                                                                 
+
+Grammar is LR(1) -- no conflicts detected.

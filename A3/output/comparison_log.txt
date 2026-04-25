@@ -1,0 +1,21 @@
+SLR(1) vs LR(1) Automated Comparison
+Grammar : input/grammar_conflict.txt
+Strings : input/test_strings.txt
+
++-----------------------------------+------------+------------+----------+
+| Test String                       | SLR Result | LR1 Result | Match?   |
++-----------------------------------+------------+------------+----------+
+| id                                | ACCEPTED   | ACCEPTED   | YES      |
+| * id                              | ACCEPTED   | ACCEPTED   | YES      |
+| id = id                           | ACCEPTED   | ACCEPTED   | YES      |
+| * id = id                         | ACCEPTED   | ACCEPTED   | YES      |
+| id = * id                         | ACCEPTED   | ACCEPTED   | YES      |
+| * * id                            | ACCEPTED   | ACCEPTED   | YES      |
+| = id                              | REJECTED   | REJECTED   | YES      |
+| id = id = id                      | REJECTED   | REJECTED   | YES      |
++-----------------------------------+------------+------------+----------+
+  Total: 8  |  Matched: 8  |  Mismatched: 0  |  SLR conflicts: 1  |  LR1 conflicts: 0
++-----------------------------------+------------+------------+----------+
+
+SLR(1) Table Conflicts:
+  SHIFT-REDUCE conflict in state 2 on symbol '=': existing='shift 6' vs new='reduce 5'

@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.*;
 
 public class SLRBuilder {
@@ -167,6 +168,61 @@ public class SLRBuilder {
 
     public List<String> getConflicts() {
         return Collections.unmodifiableList(conflicts);
+    }
+
+    public void saveStates(PrintWriter pw) {
+        pw.println("LR(0) / SLR(1) Canonical Collection");
+        pw.println("Total states: " + canonicalCollection.size());
+        pw.println("=".repeat(60));
+        pw.println();
+        for (State s : canonicalCollection) {
+            pw.print(s.toString());
+            Map<String, Integer> tr = s.getTransitions();
+            if (!tr.isEmpty()) {
+                pw.println("  Goto:");
+                for (Map.Entry<String, Integer> e : tr.entrySet()) {
+                    pw.println("    " + e.getKey() + " -> State " + e.getValue());
+                }
+            }
+            pw.println("-".repeat(60));
+        }
+    }
+
+    public void saveTable(PrintWriter pw) {
+        Set<String> termCols = new LinkedHashSet<>(grammar.getTerminals());
+        termCols.add("$");
+        Set<String> ntCols = new LinkedHashSet<>(grammar.getNonTerminals());
+        ntCols.remove(grammar.getAugmentedStart());
+
+        pw.println("SLR(1) Parsing Table");
+        pw.println("Total states: " + canonicalCollection.size());
+        pw.println("=".repeat(80));
+        pw.println();
+
+        StringBuilder header = new StringBuilder();
+        header.append(String.format("%-8s", "State"));
+        for (String t : termCols)  header.append(String.format("%-20s", t));
+        for (String nt : ntCols)   header.append(String.format("%-15s", nt));
+        pw.println(header.toString());
+        pw.println("-".repeat(8 + termCols.size() * 20 + ntCols.size() * 15));
+
+        for (int id = 0; id < canonicalCollection.size(); id++) {
+            StringBuilder row = new StringBuilder();
+            row.append(String.format("%-8d", id));
+            Map<String, String>  a = actionTable.getOrDefault(id, Collections.emptyMap());
+            Map<String, Integer> g = gotoTable.getOrDefault(id, Collections.emptyMap());
+            for (String t : termCols)  row.append(String.format("%-20s", a.getOrDefault(t, "")));
+            for (String nt : ntCols)   row.append(String.format("%-15s", g.containsKey(nt) ? g.get(nt) : ""));
+            pw.println(row.toString());
+        }
+
+        pw.println();
+        if (conflicts.isEmpty()) {
+            pw.println("Grammar is SLR(1) -- no conflicts detected.");
+        } else {
+            pw.println("SLR(1) Conflicts:");
+            for (String c : conflicts) pw.println("  " + c);
+        }
     }
 
     public void printCanonicalCollection() {

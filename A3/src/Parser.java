@@ -271,26 +271,22 @@ public class Parser {
         System.out.println(accepted ? "Result: ACCEPTED" : "Result: REJECTED - " + errorMessage);
     }
 
-    public void saveTraceToFile(String path, String inputString) throws IOException {
-        try (BufferedWriter w = new BufferedWriter(new FileWriter(path))) {
-            w.write(parserName + " Parsing Trace");               w.newLine();
-            w.write("Input: " + (inputString == null ? "" : inputString)); w.newLine();
-            w.write("=".repeat(110));                             w.newLine();
-            w.write(String.format("%-6s %-45s %-30s %s", "Step", "Stack", "Input", "Action"));
-            w.newLine();
-            w.write("-".repeat(110));                             w.newLine();
-            for (String[] r : traceRows) {
-                w.write(String.format("%-6s %-45s %-30s %s", r[0], r[1], r[2], r[3]));
-                w.newLine();
-            }
-            w.newLine();
-            w.write(accepted ? "Result: ACCEPTED" : "Result: REJECTED - " + errorMessage);
-            w.newLine();
-            if (accepted && parseTree != null) {
-                w.write("=".repeat(110));        w.newLine();
-                w.write("Parse Tree:");          w.newLine();
-                w.write(parseTree.render());
-            }
+    public void saveTrace(PrintWriter pw, String inputString) {
+        pw.println(parserName + " Parsing Trace");
+        pw.println("Input: " + (inputString == null ? "" : inputString));
+        pw.println("=".repeat(110));
+        pw.printf("%-6s %-45s %-30s %s%n", "Step", "Stack", "Input", "Action");
+        pw.println("-".repeat(110));
+        for (String[] r : traceRows) {
+            pw.printf("%-6s %-45s %-30s %s%n", r[0], r[1], r[2], r[3]);
         }
+        pw.println();
+        pw.println(accepted ? "Result: ACCEPTED" : "Result: REJECTED - " + errorMessage);
+        if (accepted && parseTree != null) {
+            pw.println("=".repeat(110));
+            pw.println("Parse Tree:");
+            pw.print(parseTree.render());
+        }
+        pw.println();
     }
 }

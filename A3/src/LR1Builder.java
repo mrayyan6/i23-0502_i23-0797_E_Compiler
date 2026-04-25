@@ -151,43 +151,40 @@ public class LR1Builder {
         }
     }
 
-    /** Writes the same table (plus conflicts) to a file -- used by Main2.java. */
-    public void saveTableToFile(String path) throws IOException {
+    public void saveTable(PrintWriter pw) {
         Set<String> terminalCols = new LinkedHashSet<>(grammar.getTerminals());
         terminalCols.add("$");
         Set<String> nonTerminalCols = new LinkedHashSet<>(grammar.getNonTerminals());
         nonTerminalCols.remove(grammar.getAugmentedStart());
 
-        try (BufferedWriter w = new BufferedWriter(new FileWriter(path))) {
-            w.write("LR(1) Parsing Table"); w.newLine();
-            w.write("Total states: " + canonicalCollection.size()); w.newLine();
-            w.write("=".repeat(80));       w.newLine(); w.newLine();
+        pw.println("LR(1) Parsing Table");
+        pw.println("Total states: " + canonicalCollection.size());
+        pw.println("=".repeat(80));
+        pw.println();
 
-            StringBuilder header = new StringBuilder();
-            header.append(String.format("%-8s", "State"));
-            for (String t : terminalCols)    header.append(String.format("%-20s", t));
-            for (String nt : nonTerminalCols) header.append(String.format("%-15s", nt));
-            w.write(header.toString()); w.newLine();
-            w.write("-".repeat(8 + terminalCols.size() * 20 + nonTerminalCols.size() * 15)); w.newLine();
+        StringBuilder header = new StringBuilder();
+        header.append(String.format("%-8s", "State"));
+        for (String t : terminalCols)     header.append(String.format("%-20s", t));
+        for (String nt : nonTerminalCols) header.append(String.format("%-15s", nt));
+        pw.println(header.toString());
+        pw.println("-".repeat(8 + terminalCols.size() * 20 + nonTerminalCols.size() * 15));
 
-            for (int id = 0; id < canonicalCollection.size(); id++) {
-                StringBuilder row = new StringBuilder();
-                row.append(String.format("%-8d", id));
-                Map<String, String>  a = actionTable.getOrDefault(id, Collections.emptyMap());
-                Map<String, Integer> g = gotoTable.getOrDefault(id,   Collections.emptyMap());
-                for (String t : terminalCols)    row.append(String.format("%-20s", a.getOrDefault(t, "")));
-                for (String nt : nonTerminalCols) row.append(String.format("%-15s", g.containsKey(nt) ? g.get(nt) : ""));
-                w.write(row.toString()); w.newLine();
-            }
+        for (int id = 0; id < canonicalCollection.size(); id++) {
+            StringBuilder row = new StringBuilder();
+            row.append(String.format("%-8d", id));
+            Map<String, String>  a = actionTable.getOrDefault(id, Collections.emptyMap());
+            Map<String, Integer> g = gotoTable.getOrDefault(id,   Collections.emptyMap());
+            for (String t : terminalCols)     row.append(String.format("%-20s", a.getOrDefault(t, "")));
+            for (String nt : nonTerminalCols) row.append(String.format("%-15s", g.containsKey(nt) ? g.get(nt) : ""));
+            pw.println(row.toString());
+        }
 
-            w.newLine();
-            if (conflicts.isEmpty()) {
-                w.write("Grammar is LR(1) -- no conflicts detected.");
-                w.newLine();
-            } else {
-                w.write("Conflicts:"); w.newLine();
-                for (String c : conflicts) { w.write("  " + c); w.newLine(); }
-            }
+        pw.println();
+        if (conflicts.isEmpty()) {
+            pw.println("Grammar is LR(1) -- no conflicts detected.");
+        } else {
+            pw.println("LR(1) Conflicts:");
+            for (String c : conflicts) pw.println("  " + c);
         }
     }
 }

@@ -1,0 +1,24 @@
+SLR(1) vs LR(1) Comparison Report
+Grammar file : input/grammar.txt
+Inputs tested: 7
+======================================================================
+
+Metric                           SLR(1)             LR(1)             
+----------------------------------------------------------------------
+States                           12                 22                
+Non-empty ACTION cells           36                 56                
+Non-empty GOTO cells             9                  15                
+Conflicts                        0                  0                 
+Table build time (ms)            13.403             17.796            
+Total parse time (ms)            7.978              4.567             
+Accepted inputs                  6/7                6/7               
+
+----- SLR(1) Conflicts -----
+  (none)
+
+----- LR(1) Conflicts -----
+  (none)
+
+----- Verdict -----
+Both parsers handle this grammar without conflicts.
+LR(1) uses more states (22 vs 12) for the same language, illustrating its space cost.

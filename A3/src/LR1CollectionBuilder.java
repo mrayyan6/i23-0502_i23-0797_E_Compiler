@@ -147,56 +147,40 @@ public class LR1CollectionBuilder {
         }
     }
 
-    public void saveStatesToFile(String filepath) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
-
-        writer.write("LR(1) Canonical Collection");
-        writer.newLine();
-        writer.write("Total states: " + canonicalCollection.size());
-        writer.newLine();
-        writer.write("=".repeat(60));
-        writer.newLine();
-        writer.newLine();
+    public void saveStates(PrintWriter pw) {
+        pw.println("LR(1) Canonical Collection");
+        pw.println("Total states: " + canonicalCollection.size());
+        pw.println("=".repeat(60));
+        pw.println();
 
         for (State1 state : canonicalCollection) {
-            writer.write("State " + state.getStateId());
-            writer.newLine();
-            writer.write("-".repeat(40));
-            writer.newLine();
+            pw.println("State " + state.getStateId());
+            pw.println("-".repeat(40));
 
             List<Item1> sortedItems = new ArrayList<>(state.getItems());
             sortedItems.sort(Comparator.comparing(Item1::toString));
 
-            writer.write("Items:");
-            writer.newLine();
+            pw.println("Items:");
             for (Item1 item : sortedItems) {
-                writer.write("  " + item.toString());
-                writer.newLine();
+                pw.println("  " + item.toString());
             }
-
-            writer.newLine();
+            pw.println();
 
             Map<String, Integer> transitions = state.getTransitions();
             if (!transitions.isEmpty()) {
-                writer.write("Goto:");
-                writer.newLine();
+                pw.println("Goto:");
                 List<String> sortedSymbols = new ArrayList<>(transitions.keySet());
                 Collections.sort(sortedSymbols);
                 for (String symbol : sortedSymbols) {
-                    writer.write("  " + symbol + " -> State " + transitions.get(symbol));
-                    writer.newLine();
+                    pw.println("  " + symbol + " -> State " + transitions.get(symbol));
                 }
             } else {
-                writer.write("Goto: (none)");
-                writer.newLine();
+                pw.println("Goto: (none)");
             }
 
-            writer.newLine();
-            writer.write("=".repeat(60));
-            writer.newLine();
-            writer.newLine();
+            pw.println();
+            pw.println("=".repeat(60));
+            pw.println();
         }
-
-        writer.close();
     }
 }
