@@ -1,0 +1,14 @@
+<root>
+  <school>FAST-NUCES</school>
+  <departments>
+    <item>CS</item>
+    <item>SE</item>
+    <item>AI</item>
+  </departments>
+  <stats>
+    <students>5000</students>
+    <faculty>200</faculty>
+    <accredited>true</accredited>
+  </stats>
+  <motto/>
+</root>

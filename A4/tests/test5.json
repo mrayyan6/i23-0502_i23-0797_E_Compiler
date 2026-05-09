@@ -1,0 +1,10 @@
+{
+  "school": "FAST-NUCES",
+  "departments": ["CS", "SE", "AI"],
+  "stats": {
+    "students": 5000,
+    "faculty": 200,
+    "accredited": true
+  },
+  "motto": null
+}

@@ -1,0 +1,22 @@
+
+--- Running tests/test1.lang ---
+  ERROR: cant read tests/test1.lang - tests\test1.lang
+
+
+--- Running tests/test2.lang ---
+  ERROR: cant read tests/test2.lang - tests\test2.lang
+
+
+--- Running tests/test3.lang ---
+  ERROR: cant read tests/test3.lang - tests\test3.lang
+
+
+--- Running tests/test4.lang ---
+  ERROR: cant read tests/test4.lang - tests\test4.lang
+
+
+--- Running tests/test5.lang ---
+  ERROR: cant read tests/test5.lang - tests\test5.lang
+
+=== ALL TESTS COMPLETE ===
+Results written to TestResults.txt
